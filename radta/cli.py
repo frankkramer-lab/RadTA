@@ -74,7 +74,7 @@ def parse_arguments():
         queue_vol_post = []
         for x in os.listdir(args.vol_pre):
             queue_vol_pre.append(Path(os.path.join(args.vol_pre, x)))
-            queue_vol_post.append(Path(os.path.join(args.vol_pre, x)))
+            queue_vol_post.append(Path(os.path.join(args.vol_post, x)))
 
     # Return arguments
     return queue_vol_pre, queue_vol_post, args.path_output, mode_single
