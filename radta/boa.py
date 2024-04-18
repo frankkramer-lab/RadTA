@@ -49,10 +49,12 @@ def run_boa(vol_pre, vol_post, path_out):
         bca_pdf=False
     )
 
-
-    # subprocess.run(["python3.9", exec_boa, 
-    #                 "--input-image", path_in, 
-    #                 "--output-dir", path_out, 
-    #                 "--models", "total+bca"]) 
-
-    # print("finished", vol)
+    # Run BOA for volume post
+    analyze_ct(
+        input_folder=vol_post,
+        processed_output_folder=path_out_post,
+        excel_output_folder=path_out_post,
+        models="total+bca",
+        total_preview=False,
+        bca_pdf=False
+    )
