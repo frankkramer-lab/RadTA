@@ -27,6 +27,7 @@ from cli import parse_arguments
 from boa import run_boa
 from process import process_boa_results
 from evaluate import run_eval
+from tqdm import tqdm
 
 #-----------------------------------------------------#
 #                     radTA Runner                    #
@@ -36,7 +37,7 @@ if __name__ == "__main__":
     input_vol_pre, input_vol_post, path_output, mode_single = parse_arguments()
         
     # Process queue
-    for i in range(0, len(input_vol_pre)):
+    for i in tqdm(range(0, len(input_vol_pre))):
         # Get next volumes from the queue
         path_vol_pre = input_vol_pre[i]
         path_vol_post = input_vol_post[i]
