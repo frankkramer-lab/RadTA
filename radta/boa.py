@@ -35,7 +35,7 @@ def run_boa(vol_pre, vol_post, path_out):
     name_pre = str(vol_pre).split("/")[-1].split(".")[0] + ".boa.pre"
     path_out_pre = Path(os.path.join(path_out, name_pre))
     name_post = str(vol_post).split("/")[-1].split(".")[0] + ".boa.post"
-    path_out_post = Path(os.path.join(path_out, name_pre))
+    path_out_post = Path(os.path.join(path_out, name_post))
 
     # Define nnU-Net config
     os.environ["nnUNet_USE_TRITON"] = "0"
@@ -45,7 +45,7 @@ def run_boa(vol_pre, vol_post, path_out):
         input_folder=vol_pre,
         processed_output_folder=path_out_pre,
         excel_output_folder=path_out_pre,
-        models="total+bca",
+        models=["total","bca"],
         total_preview=False,
         bca_pdf=False
     )
@@ -55,7 +55,10 @@ def run_boa(vol_pre, vol_post, path_out):
         input_folder=vol_post,
         processed_output_folder=path_out_post,
         excel_output_folder=path_out_post,
-        models="total+bca",
+        models=["total","bca"],
         total_preview=False,
         bca_pdf=False
     )
+
+    # Return pathes to BOA outcome excel files
+    path_boa_out_pre = os.path.join(path_out_pre, "")
