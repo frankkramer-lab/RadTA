@@ -21,22 +21,42 @@
 #-----------------------------------------------------#
 #                   Library imports                   #
 #-----------------------------------------------------#
+import os
+from pathlib import Path
 from cli import parse_arguments
 from boa import run_boa
+from process import process_boa_results
+from evaluate import run_eval
 
 #-----------------------------------------------------#
 #                     radTA Runner                    #
 #-----------------------------------------------------#
 if __name__ == "__main__":
     # Parse arguments via CI
-    path_vol_pre, path_vol_post, path_output = parse_arguments()
-    # Run TotalSegmentator and BOA
-    run_boa(path_vol_pre, path_vol_post, path_output)
+    input_vol_pre, input_vol_post, path_output, mode_single = parse_arguments()
+        
+    # Process queue
+    for i in range(0, len(input_vol_pre)):
+        # Get next volumes from the queue
+        path_vol_pre = input_vol_pre[i]
+        path_vol_post = input_vol_post[i]
 
-    # proc: load results from boa
-    # proc: transform them in better format
-    # proc: store volA, volB formated results in output directory
-    # proc: compute difference between volA, volB
-    # proc: store difference in output directory
+        # Run TotalSegmentator and BOA
+        pboa_pre, pboa_post = run_boa(path_vol_pre, path_vol_post, path_output)
+        # Load and parse BOA results into a feature table
+        dt_ft = process_boa_results(pboa_pre, pboa_post)
+
+        # Store radiomics table including differences
+        name_pre = str(path_vol_pre).split("/")[-1].split(".")[0]
+        name_post = str(path_vol_post).split("/")[-1].split(".")[0]
+        if name_pre != name_post:
+            path_out_diff = os.path.join(path_output, name_pre + "-" + name_post)
+        else:
+            path_out_diff = os.path.join(path_output, name_pre)
+        dt_ft.to_csv(path_out_diff + ".csv", index=False)
+
+    # If directory mode, run evaluation
+    if not mode_single : run_eval(path_output)
+
     # eval: compute plots (dynamically with plotly in which you can select the feature?)
 

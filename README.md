@@ -31,5 +31,5 @@ apt-get -y update; DEBIAN_FRONTEND=noninteractive apt-get -y install \
 python3.9 -m pip install -r requirements.txt
 python3.9 -m pip install pyradiomics # add to requirements
 python3.9 -m pip install torch  # add to requirements
-python3.9 -m pip install external_BOA/. # still needed????
+python3.9 -m pip install external_BOA/.
 ```
