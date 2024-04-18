@@ -1,0 +1,3 @@
+[submodule "external_BOA"]
+	path = external_BOA
+	url = https://github.com/UMEssen/Body-and-Organ-Analysis.git
