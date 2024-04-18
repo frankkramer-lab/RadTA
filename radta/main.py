@@ -58,6 +58,3 @@ if __name__ == "__main__":
 
     # If directory mode, run evaluation
     if not mode_single : run_eval(path_output)
-
-    # eval: compute plots (dynamically with plotly in which you can select the feature?)
-
