@@ -22,6 +22,7 @@
 #                   Library imports                   #
 #-----------------------------------------------------#
 import os
+from pathlib import Path
 from body_organ_analysis.commands import analyze_ct
 
 #-----------------------------------------------------#
@@ -29,12 +30,12 @@ from body_organ_analysis.commands import analyze_ct
 #-----------------------------------------------------#
 def run_boa(vol_pre, vol_post, path_out):
     # create working directory if not existend
-    if not os.path.exists(path_out) : os.mkdir(path_out)
+    if not path_out.exists() : os.mkdir(path_out)
     # define boa output directories for each volume
-    name_pre = vol_pre.split("/")[-1].split(".")[0] + ".boa.pre"
-    path_out_pre = os.path.join(path_out, name_pre)
-    name_post = vol_post.split("/")[-1].split(".")[0] + ".boa.post"
-    path_out_post = os.path.join(path_out, name_pre)
+    name_pre = str(vol_pre).split("/")[-1].split(".")[0] + ".boa.pre"
+    path_out_pre = Path(os.path.join(path_out, name_pre))
+    name_post = str(vol_post).split("/")[-1].split(".")[0] + ".boa.post"
+    path_out_post = Path(os.path.join(path_out, name_pre))
 
     # Define nnU-Net config
     os.environ["nnUNet_USE_TRITON"] = "0"

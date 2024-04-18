@@ -22,6 +22,7 @@
 #                   Library imports                   #
 #-----------------------------------------------------#
 import argparse
+from pathlib import Path
 
 #-----------------------------------------------------#
 #               Command Line Interface                #
@@ -32,28 +33,23 @@ def parse_arguments():
 
     # Required arguments
     parser.add_argument("-va", "--vol_pre", 
-                        type=str, 
+                        type=Path,
                         help="Path to pre volume (A)", 
                         required=True,
                         dest="vol_pre")
     parser.add_argument("-vb", "--vol_post", 
-                        type=str, 
+                        type=Path,
                         help="Path to post volume (B)",
                         required=True,
                         dest="vol_post")
 
     # Optional arguments
-    parser.add_argument("-boa", "--boa_directory", 
-                        type=str, 
-                        help="Path to BOA software directory",
-                        default="external_BOA/",
-                        dest="path_boa")
     parser.add_argument("-o", "--output", 
-                        type=str, 
+                        type=Path,
                         help="Path to evaluation output directory",
                         default="out/",
                         dest="path_output")
 
     # Parse arguments and return parameters
     args = parser.parse_args()
-    return args.vol_pre, args.vol_post, args.path_boa, args.path_output
+    return args.vol_pre, args.vol_post, args.path_output

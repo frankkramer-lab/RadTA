@@ -29,9 +29,9 @@ from boa import run_boa
 #-----------------------------------------------------#
 if __name__ == "__main__":
     # Parse arguments via CI
-    path_vol_pre, path_vol_post, path_boa, path_output = parse_arguments()
+    path_vol_pre, path_vol_post, path_output = parse_arguments()
     # Run TotalSegmentator and BOA
-    run_boa(path_vol_pre, path_vol_post, path_boa, path_output)
+    run_boa(path_vol_pre, path_vol_post, path_output)
 
     # proc: load results from boa
     # proc: transform them in better format
