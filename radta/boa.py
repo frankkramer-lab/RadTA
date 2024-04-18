@@ -23,7 +23,7 @@
 #-----------------------------------------------------#
 import os
 from pathlib import Path
-# from body_organ_analysis.commands import analyze_ct
+from body_organ_analysis.commands import analyze_ct
 
 #-----------------------------------------------------#
 #                    BOA Connector                    #
@@ -40,25 +40,25 @@ def run_boa(vol_pre, vol_post, path_out):
     # Define nnU-Net config
     os.environ["nnUNet_USE_TRITON"] = "0"
 
-    # # Run BOA for volume pre
-    # analyze_ct(
-    #     input_folder=vol_pre,
-    #     processed_output_folder=path_out_pre,
-    #     excel_output_folder=path_out_pre,
-    #     models=["total","bca"],
-    #     total_preview=False,
-    #     bca_pdf=False
-    # )
+    # Run BOA for volume pre
+    analyze_ct(
+        input_folder=vol_pre,
+        processed_output_folder=path_out_pre,
+        excel_output_folder=path_out_pre,
+        models=["total","bca"],
+        total_preview=False,
+        bca_pdf=False
+    )
 
-    # # Run BOA for volume post
-    # analyze_ct(
-    #     input_folder=vol_post,
-    #     processed_output_folder=path_out_post,
-    #     excel_output_folder=path_out_post,
-    #     models=["total","bca"],
-    #     total_preview=False,
-    #     bca_pdf=False
-    # )
+    # Run BOA for volume post
+    analyze_ct(
+        input_folder=vol_post,
+        processed_output_folder=path_out_post,
+        excel_output_folder=path_out_post,
+        models=["total","bca"],
+        total_preview=False,
+        bca_pdf=False
+    )
 
     # Return pathes to BOA outcome excel files
     path_boa_out_pre = os.path.join(path_out_pre, "output.xlsx")
