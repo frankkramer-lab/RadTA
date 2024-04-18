@@ -30,7 +30,7 @@ from evaluate import run_eval
 from tqdm import tqdm
 
 #-----------------------------------------------------#
-#                     radTA Runner                    #
+#                     RadTA Runner                    #
 #-----------------------------------------------------#
 if __name__ == "__main__":
     # Parse arguments via CI

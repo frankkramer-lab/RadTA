@@ -30,7 +30,7 @@ import os
 #-----------------------------------------------------#
 def parse_arguments():
     # Initialize CLI
-    parser = argparse.ArgumentParser(description="CLI for radTA: Radiomics Trend Analysis for CT scans")
+    parser = argparse.ArgumentParser(description="CLI for RadTA: Radiomics Trend Analysis for CT scans")
 
     # Required arguments
     parser.add_argument("-va", "--vol_pre", 
@@ -56,14 +56,14 @@ def parse_arguments():
 
     # Check if both inputs exist
     if not args.vol_pre.exists() or not args.vol_post.exists():
-        raise ValueError("radTA: One or both of the input pathes do not exist.")
+        raise ValueError("RadTA: One or both of the input pathes do not exist.")
 
     # Check if input volumes are files or directories
     if args.vol_pre.is_file() and args.vol_post.is_file():
         mode_single = True
     elif args.vol_pre.is_dir() and args.vol_post.is_dir():
         mode_single = False
-    else : raise ValueError("radTA: Inputs must be both files or directories.")
+    else : raise ValueError("RadTA: Inputs must be both files or directories.")
 
     # Parse volume queue for single file and directory mode
     if mode_single:
