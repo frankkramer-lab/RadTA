@@ -150,8 +150,10 @@ def merge_feature_tables(dt_pre_ts, dt_pre_boa,
 def compute_differences(dt_merged):
     # compute absolute difference
     dt_merged["diff_absolute"] = dt_merged["volume_post"] - dt_merged["volume_pre"]
-    # compute relative difference
+    # compute relative difference (including several edge case handling)
     dt_merged["diff_relative"] = dt_merged["diff_absolute"] / dt_merged["volume_pre"]
+    dt_merged["diff_relative"][(dt_merged["volume_pre"]==0) & (dt_merged["volume_post"]==0)] = 0
+    dt_merged.loc[~np.isfinite(dt_merged["diff_relative"]), "diff_relative"] = np.nan
     dt_merged["diff_relative"] = dt_merged["diff_relative"] * 100
     # Return feature table with differences
     return dt_merged
