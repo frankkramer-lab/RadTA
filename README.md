@@ -1,6 +1,12 @@
-# radTA: RADiomics Trend Analysis for CT scans
+# RadTA: RADiomics Trend Analysis for CT scans
 
 blabla CHATgpt
+
+todo:
+- apply RadTA on public datasets
+- write eval: ploting
+- requirements.txt fix
+- write documentation
 
 ### Usage
 
@@ -21,7 +27,7 @@ apt-get install python3.9
 apt-get install python3-pip
 ```
 
-Install BOA & radPA:
+Install BOA & RadTA:
 
 ```sh
 # braucht man das????
