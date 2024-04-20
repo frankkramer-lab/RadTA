@@ -65,7 +65,7 @@ def run_eval(path_output):
     dt_eval.to_csv(os.path.join(path_eval, "evaluation_table.csv"), index=False)
     # Plot summary figure as heatmap
     plot_summary(dt_eval, path_eval)
-    # # Plot individual analysis figures
+    # Plot individual analysis figures
     # plot_analysis(rt_merged, dt_eval, path_eval)
 
 #-----------------------------------------------------#
@@ -117,7 +117,7 @@ def plot_summary(dt_eval, path_eval):
         significance_bins = [0, 0.01, 0.05, 0.1, 1.0]
         significance_names = ["<= " + str(x) for x in significance_bins[1:]]
         significance_names[-1] = "reject"
-        significance_colors = ["#4F7942", "#7FFFD4", "#088F8F", "#800020"]
+        significance_colors = ["#32CD32", "#7FFFD4", "#088F8F", "#800020"]
         significance_color_map = {}
         for i, sl in enumerate(significance_names):
             significance_color_map[sl] = significance_colors[i]
@@ -167,68 +167,78 @@ def plot_summary(dt_eval, path_eval):
 #-----------------------------------------------------#
 #      Analysis Plot - Individual Box+Line Plots      #
 #-----------------------------------------------------#
-# def plot_analysis(rt_merged, dt_eval, path_eval):
-#     # create evaluation analysis directory
-#     path_eval_analysis = os.path.join(path_eval, "analysis_figures")
-#     if not os.path.exists(path_eval_analysis) : os.mkdir(path_eval_analysis)
-#     # Iterate over each feature
-#     for feat in dt_eval["feature"].unique():
-#         # create subset
-#         dt_eval_feat = dt_eval[dt_eval["feature"]==feat]
-#         dt_merged_feat = rt_merged[rt_merged["feature"]==feat]
-#         # filter out nan rows
-#         with warnings.catch_warnings():
-#             warnings.simplefilter("ignore")
-#             dt_eval_feat.dropna(subset=["mean_diff_absolute"], 
-#                                 axis=0, 
-#                                 inplace=True)
-#             dt_merged_feat.dropna(subset=["volume_pre", "volume_post"], 
-#                                   axis=0, 
-#                                   inplace=True)
-#         # Skip empty feature tables
-#         if dt_merged_feat.empty : continue
+def plot_analysis(rt_merged, dt_eval, path_eval):
+    # create evaluation analysis directory
+    path_eval_analysis = os.path.join(path_eval, "analysis_figures")
+    if not os.path.exists(path_eval_analysis) : os.mkdir(path_eval_analysis)
+    # Iterate over each feature
+    for feat in dt_eval["feature"].unique():
+        # create subset
+        dt_eval_feat = dt_eval[dt_eval["feature"]==feat]
+        dt_merged_feat = rt_merged[rt_merged["feature"]==feat]
+        # filter out nan rows
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            dt_eval_feat.dropna(subset=["mean_diff_absolute"], 
+                                axis=0, 
+                                inplace=True)
+            dt_merged_feat.dropna(subset=["volume_pre", "volume_post"], 
+                                  axis=0, 
+                                  inplace=True)
+        # Skip empty feature tables
+        if dt_merged_feat.empty : continue
 
-#         # Generate feature analysis figure - TOP LEFT
-#         figtopleft = (ggplot(dt_eval_feat, aes("metric", "mean_diff_relative"))
-#                     + geom_boxplot()
-#                     + labs(title="Boxplot - Mean Relative Difference: " + feat)
-#                     + xlab("")
-#                     + ylab("Mean Relative Difference")
-#                     + facet_wrap("metric", scales = "free")
-#                     + theme_bw()
-#                     + theme(legend_text=element_text(size=1)))
-#         # Generate feature analysis figure - TOP LEFT
-#         figtopright = (ggplot(dt_eval_feat, aes("metric", "mean_diff_absolute"))
-#                     + geom_boxplot()
-#                     + labs(title="Boxplot - Mean Absolute Difference: " + feat)
-#                     + xlab("")
-#                     + ylab("Mean Absolute Difference")
-#                     + facet_wrap("metric", scales = "free")
-#                     + theme_bw()
-#                     + theme(legend_text=element_text(size=1)))
+        # Generate feature analysis figure - TOP LEFT
+        figtopleft = (ggplot(dt_eval_feat, aes("metric", "mean_diff_relative"))
+                    + geom_boxplot()
+                    + labs(title="Boxplot - Mean Relative Difference: " + feat)
+                    + xlab("")
+                    + ylab("Mean Relative Difference")
+                    + facet_wrap("metric", scales = "free", shrink=True)
+                    + theme_bw()
+                    + theme(legend_text=element_text(size=1)))
+        filename = "plot.analysis." + feat + ".topleft.png"
+        figtopleft.save(filename=filename, path=path_eval_analysis, 
+                 width=4, height=4, dpi=300,
+                 limitsize=False)
+        # Generate feature analysis figure - TOP LEFT
+        figtopright = (ggplot(dt_eval_feat, aes("metric", "mean_diff_absolute"))
+                    + geom_boxplot()
+                    + labs(title="Boxplot - Mean Absolute Difference: " + feat)
+                    + xlab("")
+                    + ylab("Mean Absolute Difference")
+                    + facet_wrap("metric", scales = "free")
+                    + theme_bw()
+                    + theme(legend_text=element_text(size=3),
+                            subplots_adjust={"wspace": 5.0}))
+        # Store figure to disk
+        filename = "plot.analysis." + feat + ".topright.png"
+        figtopright.save(filename=filename, path=path_eval_analysis, 
+                 width=4, height=4, dpi=300,
+                 limitsize=False)
 
-#         # Generate feature analysis figure - BOTTOM
-#         figbot = (ggplot(dt_merged_feat, aes("volume_pre", "volume_post"))
-#                     + geom_point(size=0.5, color="royalblue")
-#                     + geom_abline(intercept=1, linetype="dashed", size=0.5)
-#                     + labs(title="Direct Comparison: " + feat)
-#                     + xlab("Pre-Volume: Measurement")
-#                     + ylab("Post-Volume: Measurement")
-#                     + facet_wrap("metric", scales = "free")
-#                     + theme_bw()
-#                     + theme(legend_text=element_text(size=1)))
-
-#         # Multi-plot Call
-#         g1 = pw.load_ggplot(figtopleft, figsize=(4,4))
-#         g2 = pw.load_ggplot(figtopright, figsize=(4,4))
-#         gbot = pw.load_ggplot(figbot, figsize=(8,4))
-#         g12b = (g1|g2)/gbot
-#         path_fig = os.path.join(path_eval_analysis,
-#                                 "plot.analysis." + feat + ".png")
-#         g12b.savefig(path_fig)
+        # Generate feature analysis figure - BOTTOM
+        figbot = (ggplot(dt_merged_feat, aes("volume_pre", "volume_post"))
+                    + geom_point(size=0.5, color="royalblue")
+                    + geom_abline(intercept=1, linetype="dashed", size=0.5)
+                    + labs(title="Direct Comparison: " + feat)
+                    + xlab("Pre-Volume: Measurement")
+                    + ylab("Post-Volume: Measurement")
+                    + facet_wrap("metric", scales = "free")
+                    + theme_bw()
+                    + theme(legend_text=element_text(size=1)))
+        
+        # # Multi-plot Call
+        # g1 = pw.load_ggplot(figtopleft, figsize=(4,4))
+        # g2 = pw.load_ggplot(figtopright, figsize=(4,4))
+        # gbot = pw.load_ggplot(figbot, figsize=(8,4))
+        # g12b = (g1|g2)/gbot
+        # path_fig = os.path.join(path_eval_analysis,
+        #                         "plot.analysis." + feat + ".png")
+        # g12b.savefig(path_fig)
 
 #-----------------------------------------------------#
-#               Debugging               #
+#                Debugging Main Method                #
 #-----------------------------------------------------#
 if __name__ == "__main__":
-    run_eval("radta.out3")
+    run_eval("out")
