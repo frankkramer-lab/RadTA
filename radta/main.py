@@ -3,7 +3,8 @@
 #  Copyright:    2024                                                          #
 #                1 Research group: Reliable AI-driven Medical Image Analysis,  #
 #                  University of Augsburg, University Hospital Augsburg        #
-#                2 Junior research group: IMPETUS, University Hospital Kiel    #
+#                2 Junior research group: IMPETUS, University Hospital         #
+#                  Schleswig-Holstein                                          #
 #                                                                              #
 #  This program is free software: you can redistribute it and/or modify        #
 #  it under the terms of the GNU General Public License as published by        #
