@@ -42,6 +42,8 @@ Install Python3.9:
 apt-get update
 apt-get install software-properties-common
 add-apt-repository ppa:deadsnakes/ppa
+apt-get -y update; DEBIAN_FRONTEND=noninteractive apt-get -y install \
+    curl ffmpeg libsm6 libxext6 libpangocairo-1.0-0 dcmtk xvfb libjemalloc2 && rm -rf /var/lib/apt/lists/*
 # Install py39 from deadsnakes repository
 apt-get install python3.9
 # Install pip from standard ubuntu packages
@@ -52,7 +54,7 @@ Install BOA & RadTA:
 
 ```sh
 # Get the RadTA software from GitHub
-git clone --submodules https://TODO
+git clone --recurse-submodules https://TODO
 cd radta/
 # Install all dependencies via pip
 python3.9 -m pip install -r requirements.txt
